@@ -12,7 +12,7 @@ Visualização: Gráfico de barras ou linha com eixos ano e popularidade média,
 
 
 
-3. Existe correlação entre valence (positividade) e popularity?
+2. Existe correlação entre valence (positividade) e popularity?
 Observa-se uma fraca correlação positiva entre valence e popularity.
 
 Músicas mais alegres tendem a ser um pouco mais populares, mas há muitas exceções — faixas melancólicas também aparecem entre as mais tocadas.
@@ -21,7 +21,7 @@ O efeito é mais perceptível em gêneros como Pop e Reggaeton.
 
 Visualização: Scatter plot com valence no eixo X, popularity no eixo Y, pontos coloridos por gênero.
 
-4. Quais artistas mais se destacam em termos de popularidade?
+3. Quais artistas mais se destacam em termos de popularidade?
 Artistas como Drake, The Weeknd, Ariana Grande e Dua Lipa aparecem com frequência entre os mais populares.
 
 A popularidade média desses artistas é consistentemente alta, mas há uma variabilidade interessante ao longo dos anos.
@@ -30,18 +30,8 @@ Alguns artistas se destacam em gêneros específicos (ex: Kygo no EDM).
 
 Visualização: Gráfico de barras horizontais com os top 10 artistas por média de popularidade.
 
-______________________________________________________________________________________________________________________________________
 
-2. Como características como danceability e energy variam ao longo do tempo?
-A média de danceability aumentou levemente ao longo dos anos, indicando uma tendência por faixas mais dançantes.
-
-A energy das músicas também cresceu, com uma aceleração perceptível após 2015, sugerindo preferência por músicas mais intensas e ritmadas.
-
-A variação entre gêneros é alta: EDM e Dance têm alta energia e danceabilidade; Classical e Acoustic têm baixos valores em ambos.
-
-Visualização: Gráfico de linha com a evolução média de danceability e energy por ano. Alternativamente, scatter plot por faixa ou média por gênero.
-
-5. Como os atributos musicais se distribuem por gênero?
+4. Como os atributos musicais se distribuem por gênero?
 Dance e EDM têm alta danceability, energy, e valence, enquanto Classical e Jazz apresentam valores mais baixos.
 
 Hip-Hop possui alta speechiness e energy, reforçando seu caráter lírico e enérgico.
