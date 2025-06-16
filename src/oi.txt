@@ -1,44 +1,23 @@
-Análise – Principais Resultados Obtidos com o Sistema
-1. Quais gêneros musicais são mais populares em diferentes anos?
-A análise da popularidade média por gênero ao longo do tempo revela que:
+Análise dos Principais Resultados Obtidos com o Sistema
+1. Quais gêneros musicais são mais populares?
+O gráfico de barras mostra a popularidade média por gênero. Observamos que gêneros como Pop e Dance/EDM tendem a apresentar maior popularidade média, confirmando que são estilos dominantes na preferência do público. Gêneros mais clássicos ou instrumentais, como Classical e Jazz, geralmente apresentam menor popularidade média, refletindo um nicho de público menor.
 
-Pop é consistentemente o gênero mais popular na maior parte dos anos analisados.
-
-Outros gêneros como Dance, EDM e Hip-Hop ganharam destaque em popularidade nos anos mais recentes.
-
-Há variações sazonais visíveis, com certos gêneros (ex: Holiday ou Acoustic) apresentando picos de popularidade em momentos específicos.
-
-Visualização: Gráfico de barras ou linha com eixos ano e popularidade média, colorido por gênero.
-
-
-
-2. Existe correlação entre valence (positividade) e popularity?
-Observa-se uma fraca correlação positiva entre valence e popularity.
-
-Músicas mais alegres tendem a ser um pouco mais populares, mas há muitas exceções — faixas melancólicas também aparecem entre as mais tocadas.
-
-O efeito é mais perceptível em gêneros como Pop e Reggaeton.
-
-Visualização: Scatter plot com valence no eixo X, popularity no eixo Y, pontos coloridos por gênero.
+2. Existe correlação entre valence (positividade) e popularidade?
+No gráfico de dispersão (scatter plot) entre valence e popularidade, nota-se uma fraca correlação positiva. Isso indica que músicas com maior valence, ou seja, mais alegres e positivas, tendem a ser um pouco mais populares. Porém, a dispersão dos pontos revela que existem músicas melancólicas (valence baixa) que também alcançam alta popularidade, indicando que o sucesso musical não depende somente do sentimento da música.
 
 3. Quais artistas mais se destacam em termos de popularidade?
-Artistas como Drake, The Weeknd, Ariana Grande e Dua Lipa aparecem com frequência entre os mais populares.
-
-A popularidade média desses artistas é consistentemente alta, mas há uma variabilidade interessante ao longo dos anos.
-
-Alguns artistas se destacam em gêneros específicos (ex: Kygo no EDM).
-
-Visualização: Gráfico de barras horizontais com os top 10 artistas por média de popularidade.
-
+O gráfico de barras horizontais destaca os 10 artistas com maior popularidade média. Artistas como Drake, The Weeknd e Ariana Grande aparecem consistentemente entre os mais populares, reforçando seu domínio no cenário musical atual. Essa visualização permite identificar os nomes que dominam as playlists e o gosto popular.
 
 4. Como os atributos musicais se distribuem por gênero?
-Dance e EDM têm alta danceability, energy, e valence, enquanto Classical e Jazz apresentam valores mais baixos.
+O gráfico que mostra as médias de valence, energy e danceability por gênero destaca características típicas dos estilos musicais:
 
-Hip-Hop possui alta speechiness e energy, reforçando seu caráter lírico e enérgico.
+Gêneros como Dance e EDM apresentam altos valores em danceability e energy, reforçando sua natureza animada e ritmada.
 
-Atributos como instrumentalness e acousticness são fortemente associados a Classical, Jazz e Acoustic.
+Estilos mais calmos, como Classical e Jazz, têm valores menores nesses atributos, indicando músicas mais suaves e instrumentais.
 
-Visualização: Boxplots por gênero para cada atributo (valence, energy, danceability etc.), com filtros dinâmicos.
+A valence também varia, indicando o grau de positividade que cada gênero tende a ter.
 
-Resumo Geral:
-O sistema visual permitiu explorar como diferentes gêneros, artistas e características musicais se relacionam com a popularidade ao longo do tempo. Observou-se uma preferência crescente por faixas dançantes e energéticas, o domínio de gêneros como Pop e EDM, e a relevância de artistas populares de forma consistente. Apesar da fraca correlação entre positividade e sucesso, há padrões interessantes de agrupamento por estilo musical.
+Essa análise reforça a coerência dos dados e a capacidade do sistema em diferenciar os gêneros com base em características musicais importantes.
+
+Resumo Geral
+O sistema visualizou bem a relação entre gêneros, artistas e atributos musicais com a popularidade. Foi possível confirmar tendências conhecidas, como o domínio dos gêneros Pop e EDM, e a preferência por músicas com mais energia e danceability. Embora a positividade das músicas (valence) tenha uma relação fraca com o sucesso, ela não é um fator decisivo isolado. Os artistas mais populares mantêm relevância consistente, e a diversidade musical é refletida nas variações dos atributos por gênero.
