@@ -2,39 +2,41 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Análise Spotify</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Visualização de Dados - Spotify</title>
   <link rel="stylesheet" href="index.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-   <div id="loadingOverlay">
-    <div class="loader"></div>
-  </div>
-  <h1>Análise de Dados do Spotify</h1>
+  <!-- Overlay de carregamento -->
+  <div id="loadingOverlay">Carregando dados...</div>
 
-  <section>
-    <h2>1. Popularidade média por gênero</h2>
-    <canvas id="popularityByGenre"></canvas>
-  </section>
+  <main>
+    <h1>Análise de Músicas do Spotify</h1>
 
-  <section>
-    <h2>2. Correlação entre valence e popularidade</h2>
-    <canvas id="valenceVsPopularity"></canvas>
-  </section>
+    <section>
+      <h2>1. Popularidade Média por Gênero</h2>
+      <div id="chart1" class="chart"></div>
+    </section>
 
-  <section>
-    <h2>3. Artistas mais populares</h2>
-    <canvas id="topArtists"></canvas>
-  </section>
+    <section>
+      <h2>2. Correlação entre Valence e Popularidade</h2>
+      <div id="chart2" class="chart"></div>
+    </section>
 
-  <section>
-    <h2>4. Distribuição de atributos por gênero</h2>
-    <p>Gráficos boxplot são complexos em Chart.js, mas podemos mostrar médias por gênero.</p>
-    <canvas id="attributesByGenre"></canvas>
-  </section>
+    <section>
+      <h2>3. Artistas com Maior Popularidade Média</h2>
+      <div id="chart3" class="chart"></div>
+    </section>
 
-  <script src="src/main.js"></script>
+    <section>
+      <h2>4. Atributos Médios por Gênero</h2>
+      <div id="chart4" class="chart"></div>
+    </section>
+  </main>
+
+  <!-- Script principal -->
+  <script type="module" src="./src/main.js"></script>
 </body>
 </html>

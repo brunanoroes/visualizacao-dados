@@ -1,164 +1,195 @@
-// Carregar CSV e criar gráficos
 const loadingOverlay = document.getElementById('loadingOverlay');
-fetch('data/SpotifyFeatures.csv')
-  .then(response => response.text())
+
+fetch('./data/SpotifyFeatures.csv')
+  .then(res => res.text())
   .then(csvText => {
     loadingOverlay.style.display = 'none';
     const data = Papa.parse(csvText, { header: true, dynamicTyping: true }).data;
-
-    // Filtrar linhas válidas (popularity != null)
-    const filtered = data.filter(d => d.popularity !== null && d.popularity !== undefined);
-
-    // 1. Popularidade média por gênero
-    const popByGenre = {};
-    filtered.forEach(d => {
-      if (!popByGenre[d.genre]) popByGenre[d.genre] = [];
-      popByGenre[d.genre].push(d.popularity);
-    });
-    const genres = Object.keys(popByGenre);
-    const popMeans = genres.map(g => {
-      const vals = popByGenre[g];
-      return vals.reduce((a,b) => a+b, 0) / vals.length;
-    });
-
-    new Chart(document.getElementById('popularityByGenre'), {
-      type: 'bar',
-      data: {
-        labels: genres,
-        datasets: [{
-          label: 'Popularidade Média',
-          data: popMeans,
-          backgroundColor: 'rgba(54,162,235,0.7)',
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: false }
-        },
-        scales: {
-          y: { beginAtZero: true, max: 100 }
-        }
-      }
-    });
-
-    // 3. Correlação entre valence e popularity (scatter)
-    const valence = filtered.map(d => d.valence);
-    const popularity = filtered.map(d => d.popularity);
-    const genresForColor = filtered.map(d => d.genre);
-    // Cores por gênero simples
-    const genreColors = {};
-    genres.forEach((g,i) => genreColors[g] = `hsl(${i * 40}, 70%, 60%)`);
-
-    const scatterData = filtered.map(d => ({
-      x: d.valence,
-      y: d.popularity,
-      backgroundColor: genreColors[d.genre]
-    }));
-
-    new Chart(document.getElementById('valenceVsPopularity'), {
-      type: 'scatter',
-      data: {
-        datasets: [{
-          label: 'Valence x Popularidade',
-          data: scatterData,
-          pointBackgroundColor: scatterData.map(p => p.backgroundColor),
-          pointRadius: 4
-        }]
-      },
-      options: {
-        scales: {
-          x: { min: 0, max: 1, title: { display: true, text: 'Valence (Positividade)' } },
-          y: { min: 0, max: 100, title: { display: true, text: 'Popularidade' } }
-        },
-        plugins: {
-          legend: { display: false }
-        }
-      }
-    });
-
-    // 4. Top artistas por popularidade média
-    const popByArtist = {};
-    filtered.forEach(d => {
-      if (!popByArtist[d.artist_name]) popByArtist[d.artist_name] = [];
-      popByArtist[d.artist_name].push(d.popularity);
-    });
-
-    const artists = Object.keys(popByArtist);
-    const popMeanArtist = artists.map(a => {
-      const vals = popByArtist[a];
-      return {
-        artist: a,
-        mean: vals.reduce((a,b) => a+b,0) / vals.length
-      };
-    });
-
-    popMeanArtist.sort((a,b) => b.mean - a.mean);
-    const top10 = popMeanArtist.slice(0, 10);
-
-    new Chart(document.getElementById('topArtists'), {
-      type: 'bar',
-      data: {
-        labels: top10.map(t => t.artist),
-        datasets: [{
-          label: 'Popularidade Média',
-          data: top10.map(t => t.mean),
-          backgroundColor: 'rgba(255, 99, 132, 0.7)'
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        scales: {
-          x: { beginAtZero: true, max: 100 }
-        },
-        plugins: {
-          legend: { display: false }
-        }
-      }
-    });
-
-    // 5. Atributos médios por gênero (valence, energy, danceability)
-    const attrByGenre = {};
-    filtered.forEach(d => {
-      if (!attrByGenre[d.genre]) attrByGenre[d.genre] = { valence: [], energy: [], danceability: [] };
-      attrByGenre[d.genre].valence.push(d.valence);
-      attrByGenre[d.genre].energy.push(d.energy);
-      attrByGenre[d.genre].danceability.push(d.danceability);
-    });
-
-    const attrLabels = genres;
-    const valenceMeans = genres.map(g => {
-      const arr = attrByGenre[g].valence;
-      return arr.reduce((a,b) => a+b, 0) / arr.length;
-    });
-    const energyMeans = genres.map(g => {
-      const arr = attrByGenre[g].energy;
-      return arr.reduce((a,b) => a+b, 0) / arr.length;
-    });
-    const danceMeans = genres.map(g => {
-      const arr = attrByGenre[g].danceability;
-      return arr.reduce((a,b) => a+b, 0) / arr.length;
-    });
-
-    new Chart(document.getElementById('attributesByGenre'), {
-      type: 'bar',
-      data: {
-        labels: attrLabels,
-        datasets: [
-          { label: 'Valence', data: valenceMeans, backgroundColor: 'rgba(255, 206, 86, 0.7)' },
-          { label: 'Energy', data: energyMeans, backgroundColor: 'rgba(255, 99, 132, 0.7)' },
-          { label: 'Danceability', data: danceMeans, backgroundColor: 'rgba(54, 162, 235, 0.7)' },
-        ]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: { beginAtZero: true, max: 1 }
-        }
-      }
-    });
+    renderCharts(data);
   })
-    .catch(err => {
-    console.error('Erro ao carregar CSV:', err);
+  .catch(err => {
+    console.error(err);
+    loadingOverlay.innerText = 'Erro ao carregar dados.';
   });
+
+function renderCharts(data) {
+  const width = 600, height = 400, margin = { top: 40, right: 30, bottom: 50, left: 70 };
+
+  // Agrupar por gênero e calcular popularidade média
+  const genreMap = d3.group(data, d => d.genre);
+  const genreStats = Array.from(genreMap, ([genre, tracks]) => ({
+    genre,
+    popularity: d3.mean(tracks, d => d.popularity)
+  })).sort((a, b) => d3.descending(a.popularity, b.popularity));
+
+  // Gráfico 1 – Popularidade por Gênero
+  const svg1 = d3.select("#chart1")
+    .append("svg")
+    .attr("width", width).attr("height", height);
+
+  const x1 = d3.scaleBand()
+    .domain(genreStats.map(d => d.genre))
+    .range([margin.left, width - margin.right])
+    .padding(0.2);
+
+  const y1 = d3.scaleLinear()
+    .domain([0, d3.max(genreStats, d => d.popularity)]).nice()
+    .range([height - margin.bottom, margin.top]);
+
+  svg1.append("g")
+    .selectAll("rect")
+    .data(genreStats)
+    .join("rect")
+    .attr("x", d => x1(d.genre))
+    .attr("y", d => y1(d.popularity))
+    .attr("height", d => y1(0) - y1(d.popularity))
+    .attr("width", x1.bandwidth())
+    .attr("fill", "#69b3a2");
+
+  svg1.append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(d3.axisBottom(x1))
+    .selectAll("text")
+    .attr("transform", "rotate(-40)")
+    .style("text-anchor", "end");
+
+  svg1.append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y1));
+
+  svg1.append("text")
+    .attr("x", width / 2).attr("y", margin.top / 2)
+    .attr("text-anchor", "middle").text("Popularidade média por Gênero");
+
+  // Gráfico 2 – Scatter Plot Valence vs Popularidade
+  const svg2 = d3.select("#chart2")
+    .append("svg")
+    .attr("width", width).attr("height", height);
+
+  const x2 = d3.scaleLinear().domain([0, 1]).range([margin.left, width - margin.right]);
+  const y2 = d3.scaleLinear().domain([0, 100]).range([height - margin.bottom, margin.top]);
+
+  svg2.append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(d3.axisBottom(x2).ticks(10));
+
+  svg2.append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y2));
+
+  svg2.selectAll("circle")
+    .data(data)
+    .join("circle")
+    .attr("cx", d => x2(d.valence))
+    .attr("cy", d => y2(d.popularity))
+    .attr("r", 3)
+    .attr("fill", "#ff7f0e")
+    .attr("opacity", 0.6);
+
+  svg2.append("text")
+    .attr("x", width / 2).attr("y", margin.top / 2)
+    .attr("text-anchor", "middle").text("Valence vs Popularidade");
+
+  // Gráfico 3 – Top 10 Artistas Populares
+  const artistMap = d3.group(data, d => d.artist_name);
+  const artistStats = Array.from(artistMap, ([artist, tracks]) => ({
+    artist,
+    popularity: d3.mean(tracks, d => d.popularity)
+  })).sort((a, b) => d3.descending(a.popularity, b.popularity)).slice(0, 10);
+
+  const svg3 = d3.select("#chart3")
+    .append("svg")
+    .attr("width", width).attr("height", height);
+
+  const y3 = d3.scaleBand()
+    .domain(artistStats.map(d => d.artist))
+    .range([margin.top, height - margin.bottom])
+    .padding(0.2);
+
+  const x3 = d3.scaleLinear()
+    .domain([0, d3.max(artistStats, d => d.popularity)]).nice()
+    .range([margin.left, width - margin.right]);
+
+  svg3.append("g")
+    .selectAll("rect")
+    .data(artistStats)
+    .join("rect")
+    .attr("x", margin.left)
+    .attr("y", d => y3(d.artist))
+    .attr("height", y3.bandwidth())
+    .attr("width", d => x3(d.popularity) - margin.left)
+    .attr("fill", "#1f77b4");
+
+  svg3.append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y3));
+
+  svg3.append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(d3.axisBottom(x3));
+
+  svg3.append("text")
+    .attr("x", width / 2).attr("y", margin.top / 2)
+    .attr("text-anchor", "middle").text("Top 10 Artistas mais Populares");
+
+  // Gráfico 4 – Atributos Médios por Gênero
+  const atributos = ['valence', 'energy', 'danceability'];
+
+  const grouped = Array.from(genreMap, ([genre, tracks]) => {
+    const obj = { genre };
+    atributos.forEach(attr => obj[attr] = d3.mean(tracks, d => d[attr]));
+    return obj;
+  });
+
+  const svg4 = d3.select("#chart4")
+    .append("svg")
+    .attr("width", width).attr("height", height + 100);
+
+  const x4 = d3.scaleBand()
+    .domain(grouped.map(d => d.genre))
+    .range([margin.left, width - margin.right])
+    .padding(0.2);
+
+  const y4 = d3.scaleLinear()
+    .domain([0, 1])
+    .range([height - margin.bottom, margin.top]);
+
+  const color = d3.scaleOrdinal()
+    .domain(atributos)
+    .range(["#e41a1c", "#377eb8", "#4daf4a"]);
+
+  atributos.forEach((attr, i) => {
+    svg4.selectAll(`.bar-${attr}`)
+      .data(grouped)
+      .join("rect")
+      .attr("x", d => x4(d.genre) + i * (x4.bandwidth() / atributos.length))
+      .attr("y", d => y4(d[attr]))
+      .attr("width", x4.bandwidth() / atributos.length)
+      .attr("height", d => y4(0) - y4(d[attr]))
+      .attr("fill", color(attr));
+  });
+
+  svg4.append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(d3.axisBottom(x4))
+    .selectAll("text")
+    .attr("transform", "rotate(-40)").style("text-anchor", "end");
+
+  svg4.append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y4));
+
+  svg4.append("text")
+    .attr("x", width / 2).attr("y", margin.top / 2)
+    .attr("text-anchor", "middle").text("Atributos por Gênero (valence, energy, danceability)");
+
+  // Legenda
+  const legend = svg4.append("g").attr("transform", `translate(${margin.left},${height + 10})`);
+  atributos.forEach((attr, i) => {
+    legend.append("rect")
+      .attr("x", i * 120).attr("y", 0).attr("width", 15).attr("height", 15)
+      .attr("fill", color(attr));
+    legend.append("text")
+      .attr("x", i * 120 + 20).attr("y", 12).text(attr);
+  });
+}
