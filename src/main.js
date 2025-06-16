@@ -27,24 +27,30 @@ chartSelector.addEventListener("change", e => {
 });
 
 function renderChartBySelection(selection) {
-  chartContainer.selectAll("*").remove(); // limpa conteúdo
+  loadingOverlay.style.display = 'flex'; // mostra loading
 
-  switch(selection) {
-    case "popularidadeGenero":
-      renderBarChartGenrePopularity(dataset);
-      break;
-    case "valencePopularidade":
-      renderScatterValencePopularity(dataset);
-      break;
-    case "topArtistas":
-      renderTopArtists(dataset);
-      break;
-    case "atributosGenero":
-      renderAvgAttributesByGenre(dataset);
-      break;
-    default:
-      chartContainer.append("p").text("Opção inválida.");
-  }
+  setTimeout(() => {
+    chartContainer.selectAll("*").remove(); // limpa gráfico antigo
+
+    switch(selection) {
+      case "popularidadeGenero":
+        renderBarChartGenrePopularity(dataset);
+        break;
+      case "valencePopularidade":
+        renderScatterValencePopularity(dataset);
+        break;
+      case "topArtistas":
+        renderTopArtists(dataset);
+        break;
+      case "atributosGenero":
+        renderAvgAttributesByGenre(dataset);
+        break;
+      default:
+        chartContainer.append("p").text("Opção inválida.");
+    }
+
+    loadingOverlay.style.display = 'none'; // esconde loading
+  }, 50); // 50ms pra browser conseguir pintar o overlay
 }
 
 // Gráfico 1: Popularidade média por gênero
