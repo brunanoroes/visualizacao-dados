@@ -21,3 +21,5 @@ Essa análise reforça a coerência dos dados e a capacidade do sistema em difer
 
 Resumo Geral
 O sistema visualizou bem a relação entre gêneros, artistas e atributos musicais com a popularidade. Foi possível confirmar tendências conhecidas, como o domínio dos gêneros Pop e EDM, e a preferência por músicas com mais energia e danceability. Embora a positividade das músicas (valence) tenha uma relação fraca com o sucesso, ela não é um fator decisivo isolado. Os artistas mais populares mantêm relevância consistente, e a diversidade musical é refletida nas variações dos atributos por gênero.
+
+https://www.kaggle.com/datasets/zaheenhamidani/ultimate-spotify-tracks-db?resource=download
