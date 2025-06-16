@@ -69,3 +69,13 @@ rect[class^="bar-"]:hover {
 circle:hover {
   fill: darkred;
 }
+.tooltip {
+  position: absolute;
+  background: #f9f9f9;
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  pointer-events: none;
+  font-size: 12px;
+  display: none;
+}

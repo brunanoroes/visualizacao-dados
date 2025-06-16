@@ -15,25 +15,18 @@
   <main>
     <h1>Análise de Músicas do Spotify</h1>
 
-    <section>
-      <h2>1. Popularidade Média por Gênero</h2>
-      <div id="chart1" class="chart"></div>
+   <section>
+      <h2>Análises Interativas</h2>
+      <select id="chartSelector">
+        <option value="popularidadeGenero">Popularidade Média por Gênero</option>
+        <option value="valencePopularidade">Valence vs Popularidade</option>
+        <option value="topArtistas">Top 10 Artistas Populares</option>
+        <option value="atributosGenero">Atributos Médios por Gênero</option>
+      </select>
+
+      <div id="chart" class="chart"></div>
     </section>
 
-    <section>
-      <h2>2. Correlação entre Valence e Popularidade</h2>
-      <div id="chart2" class="chart"></div>
-    </section>
-
-    <section>
-      <h2>3. Artistas com Maior Popularidade Média</h2>
-      <div id="chart3" class="chart"></div>
-    </section>
-
-    <section>
-      <h2>4. Atributos Médios por Gênero</h2>
-      <div id="chart4" class="chart"></div>
-    </section>
   </main>
 
   <!-- Script principal -->
